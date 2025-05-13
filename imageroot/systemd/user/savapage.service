@@ -22,7 +22,8 @@ ExecStartPre=/bin/rm -f %t/savapage.pid %t/savapage.pod-id
 ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/savapage.pid \
     --pod-id-file %t/savapage.pod-id \
     --name savapage \
-    --publish 127.0.0.1:${TCP_PORT}:80 \
+    --publish 127.0.0.1:${TCP_PORT}:8631 \
+    --publish 631:631 \
     --replace
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/savapage.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/savapage.pod-id -t 10

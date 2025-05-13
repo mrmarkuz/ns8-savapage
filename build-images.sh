@@ -39,7 +39,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm" \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=docker.io/nginx:1.27.1-alpine3.20" \
+    --label="org.nethserver.images=ghcr.io/mrmarkuz/savapage-app:${IMAGETAG}" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
@@ -56,6 +56,14 @@ images+=("${repobase}/${reponame}")
 # 2. add things to it and commit it
 # 3. append the image url to the images array
 #
+
+# Build savapage-app image
+pushd savapage
+buildah build -t ${repobase}/savapage-app
+popd
+
+# Append the image URL to the images array
+images+=("${repobase}/savapage-app")
 
 #
 # Setup CI when pushing to Github. 

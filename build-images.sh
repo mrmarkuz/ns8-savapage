@@ -59,6 +59,7 @@ images+=("${repobase}/${reponame}")
 
 # Build savapage-app image
 pushd savapage
+wget "https://www.savapage.org/download/snapshots/savapage-setup-1.6.0-rc-linux-x64.bin"
 buildah build -t ${repobase}/savapage-app
 popd
 

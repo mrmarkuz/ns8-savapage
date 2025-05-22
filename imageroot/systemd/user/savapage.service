@@ -10,8 +10,8 @@
 
 [Unit]
 Description=Podman savapage.service
-Requires=savapage-app.service
-Before=savapage-app.service
+Requires=postgresql-app.service savapage-app.service
+Before=postgresql-app.service savapage-app.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n

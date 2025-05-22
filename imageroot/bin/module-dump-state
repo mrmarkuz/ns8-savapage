@@ -7,6 +7,5 @@
 
 set -e
 
-if ! systemctl --user -q is-active savapage.service; then
-    exit 0
-fi
+echo "Dumping savapage postgres database"
+podman exec postgresql-app pg_dump -U postgres --format=c  savapage > savapage.pg_dump

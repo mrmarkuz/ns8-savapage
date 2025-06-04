@@ -23,6 +23,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/savapage-app.pid \
     --pod-id-file %t/savapage.pod-id --replace -d --name  savapage-app \
     --volume savapage-custom:/opt/savapage/server/custom:Z \
     --volume savapage-data:/opt/savapage/server/data:Z \
+    --volume savapage-ext:/opt/savapage/server/ext:Z \
     --volume savapage-logs:/opt/savapage/server/logs:Z \
     --volume savapage-cups:/etc/cups:Z \
     --env SAVAPAGE_NS=SP_\

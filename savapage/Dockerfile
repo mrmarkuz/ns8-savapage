@@ -6,11 +6,11 @@ RUN apt update && apt install --no-install-recommends --no-install-suggests -y b
     gnupg curl hplip
  
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-#COPY docker.env /etc/environment
+COPY docker.env /etc/environment
  
 RUN useradd -rmd /opt/savapage -s /bin/bash -G lpadmin savapage && chown savapage:savapage /opt/savapage
 # Create persistent password for admin tasks in CUPS web interface.
-RUN echo 'savapage:mysecret' | chpasswd
+RUN echo 'savapage:savapage' | chpasswd
  
 ENV SAVAPAGE_VERSION=1.6.0-rc
 ENV SAVAPAGE_NS=SP_

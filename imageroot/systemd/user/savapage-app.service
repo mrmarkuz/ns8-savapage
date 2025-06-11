@@ -28,7 +28,18 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/savapage-app.pid \
     --volume savapage-cups:/etc/cups:Z \
     --env SAVAPAGE_NS=SP_\
     --env SP_CONTAINER=DOCKER \
+    --env SP_SRV_11=database.type:PostgreSQL \
+    --env SP_SRV_12=database.driver:org.postgresql.Driver \
+    --env SP_SRV_13=database.url:jdbc:postgresql://postgresql-app:5432/savapage \
+    --env SP_SRV_14=database.user:savapage \
+    --env SP_SRV_15=database.password:savapage \
     ${SAVAPAGE_APP_IMAGE}
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-db --db-check || /opt/savapage/server/bin/linux-x64/savapage-db --db-init
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-cmd --set-config-property --name financial.global.currency-code --value EUR
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-cmd --set-config-property --name mail.smtp.port --value 465
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-cmd --set-config-property --name mail.smtp.security --value ssl
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-cmd --set-config-property --name mail.smtp.username --value markus
+ExecStartPost=/usr/bin/podman exec -u savapage savapage-app /opt/savapage/server/bin/linux-x64/savapage-cmd --set-config-property --name mail.from.address --value markus@test.com
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/savapage-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP savapage-app
 SyslogIdentifier=%u
